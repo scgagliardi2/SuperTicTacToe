@@ -1,6 +1,6 @@
 import pygame
 import sys
-import Board
+import FullBoard
 
 # create game clock
 clock = pygame.time.Clock()
@@ -11,7 +11,7 @@ class Game:
     TickRate = 60
 
     def __init__(self):
-        self.board = Board.Board()
+        self.board = FullBoard.Board()
 
     def RunGameLoop(self):
         IsGameOver = False
