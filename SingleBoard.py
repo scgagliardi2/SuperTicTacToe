@@ -1,47 +1,44 @@
 import pygame
 import math
 import FullBoard
+import XORect
 
 class SingleBoard:
 
-    def __init__(self, gamescreen, width, height):
-        self.GameScreen = gamescreen
-        self.width = math.floor(width/3)
-        self.height = math.floor(width/3)
-        BoardImage = pygame.image.load('Images/Board.jpeg')
-        self.image = pygame.transform.scale(BoardImage, (self.width, self.width))
-        self.XImage = pygame.image.load('Images/X.jpg')
-        self.XImage = pygame.transform.scale(self.XImage, (math.floor(self.width/5), math.floor(self.width/5)))
-        self.OImage = pygame.image.load('Images/O.jpg')
-        self.OImage = pygame.transform.scale(self.OImage, (math.floor(self.width/5), math.floor(self.width/5)))
-        self.boardArray = {
-        'tl': ('e',math.floor(self.width/7.5),math.floor(self.width/7.5)),
-        'tm': ('e',math.floor(self.width/2.5),math.floor(self.width/7.5)),
-        'tr': ('e',math.floor(self.width/1.5),math.floor(self.width/7.5)),
-        'ml': ('e',math.floor(self.width/7.5),math.floor(self.width/2.4)),
-        'mm': ('e',math.floor(self.width/2.5),math.floor(self.width/2.4)),
-        'mr': ('e',math.floor(self.width/1.5),math.floor(self.width/2.4)),
-        'bl': ('e',math.floor(self.width/7.5),math.floor(self.width/1.4)),
-        'bm': ('e',math.floor(self.width/2.5),math.floor(self.width/1.4)),
-        'br': ('e',math.floor(self.width/1.5),math.floor(self.width/1.4))}
+    def __init__(self, width):
+        self.width = math.floor(width/3)-10
+        # set up the background surface
+        self.background = pygame.Surface((self.width, self.width))
+        self.background = self.background.convert()
+        self.color = (255, 255, 255)
+        self.background.fill(self.color)
+        self.XORectArray = {
+        'tl': XORect.XORect(self.background, self.width, self.width/5, self.width/5, self.color),
+        'tm': XORect.XORect(self.background, self.width, self.width/2.5, self.width/5, self.color),
+        #'tr': XORect.XORect(self.background, self.width, self.width/1.5, self.width/7.4, self.color),
+        #'ml': XORect.XORect(self.background, self.width, self.width/7.5, self.width/2.4, self.color),
+        #'mm': XORect.XORect(self.background, self.width, self.width/2.5, self.width/2.4, self.color),
+        #'mr': XORect.XORect(self.background, self.width, self.width/1.5, self.width/2.4, self.color),
+        #'bl': XORect.XORect(self.background, self.width, self.width/7.5, self.width/1.5, self.color),
+        #'bm': XORect.XORect(self.background, self.width, self.width/2.5, self.width/1.5, self.color),
+        #'br': XORect.XORect(self.background, self.width, self.width/1.5, self.width/1.5, self.color)
+        }
 
-    def draw(self, x, y):
-        self.GameScreen.blit(self.image, (x, y))
-        for letter in self.boardArray:
-            if self.boardArray[letter][0] == 'e':
-                pass
-            elif self.boardArray[letter][0] == "o":
-                self.image.blit(self.OImage, (self.boardArray[letter][1], self.boardArray[letter][2]))
-            elif self.boardArray[letter][0] == "x":
-                self.image.blit(self.XImage, (self.boardArray[letter][1], self.boardArray[letter][2]))
+    def draw(self, surface, x, y):
+        surface.blit(self.background, (x, y))
+        black = (0, 0, 0)
+        pygame.draw.line(self.background, black, (0, math.floor(self.width/3)), (self.width, math.floor(self.width/3)), 2)
+        pygame.draw.line(self.background, black, (0, math.floor(self.width/1.5)), (self.width, math.floor(self.width/1.5)), 2)
+        pygame.draw.line(self.background, black, (math.floor(self.width/3), 0), (math.floor(self.width/3), self.width), 2)
+        pygame.draw.line(self.background, black, (math.floor(self.width/1.5), 0), (math.floor(self.width/1.5), self.width), 2)
+        for item in self.XORectArray:
+            self.XORectArray[item].draw(self.background)
     
     def setAsPlayableArea(self):
-        HBoardImage = pygame.image.load('Images/HighlightedBoard.jpg')
-        self.image = pygame.transform.scale(HBoardImage, (self.width, self.width))
+        self.color = (144, 238, 144)
 
     def setAsUnplayableArea(self):
-        BoardImage = pygame.image.load('Images/Board.jpeg')
-        self.image = pygame.transform.scale(BoardImage, (self.width, self.width))
+        self.color = (255, 255, 255)
 
     def placeMove(self, turn, loc):
         pass

@@ -29,6 +29,7 @@ class Game:
                     if turn == 0:
                         mousePos = pygame.mouse.get_pos()
                         Loc = self.board.getLocation(mousePos)
+                        self.board.checkLoc(Loc)
                         self.board.placeMove(turn, Loc)
                         turn = 1
                         self.board.LowerDisplay.changeTurn(turn)
