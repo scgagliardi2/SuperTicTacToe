@@ -31,11 +31,13 @@ class Game:
                         Loc = self.board.getLocation(mousePos)
                         self.board.placeMove(turn, Loc)
                         turn = 1
+                        self.board.LowerDisplay.changeTurn(turn)
                     elif turn == 1:
                         mousePos = pygame.mouse.get_pos()
                         Loc = self.board.getLocation(mousePos)
                         self.board.placeMove(turn, Loc)
                         turn = 0
+                        self.board.LowerDisplay.changeTurn(turn)
                 elif event.type == pygame.MOUSEBUTTONUP:
                     pass
             # print(event) # uncomment to print all events to terminal

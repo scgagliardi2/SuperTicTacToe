@@ -1,17 +1,21 @@
-import pygame
+import pygame, sys
 import math
 import SingleBoard
+import LowerDisplay
+pygame.init()
 
 class Board:
 
     def __init__(self):
         self.title = 'Super Tic Tac Toe'
-        self.height = 700
+        self.height = 670
         self.width = 600
         # set window title
         pygame.display.set_caption(self.title)
         # create game display window
+        white = (255, 255, 255)
         self.GameScreen = pygame.display.set_mode((self.width, self.height))
+        self.GameScreen.fill(white)
         # load 9 boards
         self.tl = SingleBoard.SingleBoard(self.GameScreen, self.width, self.height)
         self.tm = SingleBoard.SingleBoard(self.GameScreen, self.width, self.height)
@@ -22,6 +26,7 @@ class Board:
         self.bl = SingleBoard.SingleBoard(self.GameScreen, self.width, self.height)
         self.bm = SingleBoard.SingleBoard(self.GameScreen, self.width, self.height)
         self.br = SingleBoard.SingleBoard(self.GameScreen, self.width, self.height)
+        self.LowerDisplay = LowerDisplay.LowerDisplay(self.GameScreen, self.width)
         
 
     def draw(self):
@@ -34,6 +39,7 @@ class Board:
         self.bl.draw(0, self.width/1.5)
         self.bm.draw(self.width/3, self.width/1.5)
         self.br.draw(self.width/1.5, self.width/1.5)
+        self.LowerDisplay.draw(self.height)
     
     def playableArea(self):
         pass
