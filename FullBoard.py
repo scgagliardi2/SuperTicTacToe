@@ -2,7 +2,6 @@ import pygame, sys
 import math
 import SingleBoard
 import LowerDisplay
-pygame.init()
 
 class Board:
 
@@ -17,61 +16,50 @@ class Board:
         self.GameScreen = pygame.display.set_mode((self.width, self.height))
         self.GameScreen.fill(white)
         # load 9 boards
-        self.tl = SingleBoard.SingleBoard(self.width)
-        self.tm = SingleBoard.SingleBoard(self.width)
-        self.tr = SingleBoard.SingleBoard(self.width)
-        self.ml = SingleBoard.SingleBoard(self.width)
-        self.mm = SingleBoard.SingleBoard(self.width)
-        self.mr = SingleBoard.SingleBoard(self.width)
-        self.bl = SingleBoard.SingleBoard(self.width)
-        self.bm = SingleBoard.SingleBoard(self.width)
-        self.br = SingleBoard.SingleBoard(self.width)
+        self.singleBoardArray = {'tl': SingleBoard.SingleBoard(self.width, 0, 0), 
+        'tm': SingleBoard.SingleBoard(self.width, self.width/3, 0),
+        'tr': SingleBoard.SingleBoard(self.width, self.width/1.5, 0),
+        'ml': SingleBoard.SingleBoard(self.width, 0, self.width/3),
+        'mm': SingleBoard.SingleBoard(self.width, self.width/3, self.width/3),
+        'mr': SingleBoard.SingleBoard(self.width, self.width/1.5, self.width/3),
+        'bl': SingleBoard.SingleBoard(self.width, 0, self.width/1.5),
+        'bm': SingleBoard.SingleBoard(self.width, self.width/3, self.width/1.5),
+        'br': SingleBoard.SingleBoard(self.width, self.width/1.5, self.width/1.5)}
         self.LowerDisplay = LowerDisplay.LowerDisplay(self.GameScreen, self.width)
-        BoardImage = pygame.image.load('Images/BBoard.jpg')
-        self.image = pygame.transform.scale(BoardImage, (self.width, self.width))
-        
+        BoardImage = pygame.image.load('Images/LargeBoard.jpg')
+        self.image = pygame.transform.scale(BoardImage, (self.width, self.width))  
+        self.image = self.image.convert()      
 
     def draw(self):
+        self.GameScreen.fill((255, 255, 255))
         self.GameScreen.blit(self.image, (0, 0))
-        self.tl.draw(self.GameScreen, 0, 0)
-        #self.tm.draw(self.GameScreen, self.width/3, 0)
-        #self.tr.draw(self.GameScreen, self.width/1.5, 0)
-        #self.ml.draw(self.GameScreen, 0, self.width/3)
-        #self.mm.draw(self.GameScreen, self.width/3, self.width/3)
-        #self.mr.draw(self.GameScreen, self.width/1.5, self.width/3)
-        #self.bl.draw(self.GameScreen, 0, self.width/1.5)
-        #self.bm.draw(self.GameScreen, self.width/3, self.width/1.5)
-        #self.br.draw(self.GameScreen, self.width/1.5, self.width/1.5)
+        for board in self.singleBoardArray:
+            self.singleBoardArray[board].draw(self.GameScreen)
         pygame.draw.line(self.GameScreen, (0, 0, 0), (0, self.height-70), (self.width, self.height-70), 3)
         self.LowerDisplay.draw(self.height)
     
-    def playableArea(self):
-        pass
-
-    def placeMove(self, turn, loc):
+    def placeMove(self, turn, box):
         if turn == 0:
-            O = pygame.image.load('Images/O.jpg')
-            x = self.tl.boardArray['tl'][1]
-            y = self.tl.boardArray['tl'][2]
-            self.tl.boardArray['tl'] = ('o', x, y)
-        elif turn == 1:
-            X = pygame.image.load('Images/X.jpg')
-            x = self.tl.boardArray['tl'][1]
-            y = self.tl.boardArray['tl'][2]
-            self.tl.boardArray['tl'] = ('x', x, y)
+            box.value = 'o'
+        if turn == 1:
+            box.value = 'x'
 
-    def checkLoc(self, loc):
-        #x = loc[0]
-        #y = loc[1]
-        #if x > (2/3)*self.width:
-        pass
-
+    def checkLoc(self, turn, loc):
+        for item in self.singleBoardArray:
+            board = self.singleBoardArray[item]
+            if board.isPlayable:
+                for box in board.getRects():
+                    if box[1].collidepoint(loc):
+                        if box[0].value =='e':
+                            self.placeMove(turn, box[0])
+                            return True
+                        else:
+                            return False
+                    else:
+                        pass
+            else:
+                pass
+        return False
 
     def checkWin(self):
         pass
-
-    def getLocation(self, pos):
-        x = math.floor(pos[0])
-        y = math.floor(pos[1])
-        rndPos = [x, y]
-        return rndPos

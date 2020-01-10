@@ -5,27 +5,31 @@ import XORect
 
 class SingleBoard:
 
-    def __init__(self, width):
+    def __init__(self, width, x, y):
         self.width = math.floor(width/3)-10
-        # set up the background surface
+        self.x0 = x + 5
+        self.y0 = y + 3
+        self.xf = self.x0 + self.width
+        self.yf = self.y0 + self.width
+        self.rectangle = pygame.Rect(self.x0, self.y0, self.width, self.width)
         self.background = pygame.Surface((self.width, self.width))
-        self.background = self.background.convert()
+        self.isPlayable = True
         self.color = (255, 255, 255)
-        self.background.fill(self.color)
         self.XORectArray = {
-        'tl': XORect.XORect(self.background, self.width, self.width/5, self.width/5, self.color),
-        'tm': XORect.XORect(self.background, self.width, self.width/2.5, self.width/5, self.color),
-        #'tr': XORect.XORect(self.background, self.width, self.width/1.5, self.width/7.4, self.color),
-        #'ml': XORect.XORect(self.background, self.width, self.width/7.5, self.width/2.4, self.color),
-        #'mm': XORect.XORect(self.background, self.width, self.width/2.5, self.width/2.4, self.color),
-        #'mr': XORect.XORect(self.background, self.width, self.width/1.5, self.width/2.4, self.color),
-        #'bl': XORect.XORect(self.background, self.width, self.width/7.5, self.width/1.5, self.color),
-        #'bm': XORect.XORect(self.background, self.width, self.width/2.5, self.width/1.5, self.color),
-        #'br': XORect.XORect(self.background, self.width, self.width/1.5, self.width/1.5, self.color)
+        'tl': XORect.XORect(self.width, self.width*(0.02), self.width*(0.02), self.x0, self.y0, self.color),
+        'tm': XORect.XORect(self.width, self.width*(0.355), self.width*(0.02), self.x0, self.y0, self.color),
+        'tr': XORect.XORect(self.width, self.width*(0.69), self.width*(0.02), self.x0, self.y0, self.color),
+        'ml': XORect.XORect(self.width, self.width*(0.02), self.width*(0.355), self.x0, self.y0, self.color),
+        'mm': XORect.XORect(self.width, self.width*(0.355), self.width*(0.355), self.x0, self.y0, self.color),
+        'mr': XORect.XORect(self.width, self.width*(0.69), self.width*(0.355), self.x0, self.y0, self.color),
+        'bl': XORect.XORect(self.width, self.width*(0.02), self.width*(0.69), self.x0, self.y0, self.color),
+        'bm': XORect.XORect(self.width, self.width*(0.355), self.width*(0.69), self.x0, self.y0, self.color),
+        'br': XORect.XORect(self.width, self.width*(0.69), self.width*(0.69), self.x0, self.y0, self.color)
         }
 
-    def draw(self, surface, x, y):
-        surface.blit(self.background, (x, y))
+    def draw(self, surface):
+        surface.blit(self.background, (self.x0, self.y0))
+        self.background.fill(self.color)
         black = (0, 0, 0)
         pygame.draw.line(self.background, black, (0, math.floor(self.width/3)), (self.width, math.floor(self.width/3)), 2)
         pygame.draw.line(self.background, black, (0, math.floor(self.width/1.5)), (self.width, math.floor(self.width/1.5)), 2)
@@ -36,12 +40,17 @@ class SingleBoard:
     
     def setAsPlayableArea(self):
         self.color = (144, 238, 144)
+        self.isPlayable = True
 
     def setAsUnplayableArea(self):
         self.color = (255, 255, 255)
+        self.isPlayable = False
 
     def placeMove(self, turn, loc):
         pass
 
-    def checkArea(self, area):
-        pass
+    def getRects(self):
+        rectArray = []
+        for item in self.XORectArray:
+            rectArray.append(self.XORectArray[item].getRect())
+        return rectArray

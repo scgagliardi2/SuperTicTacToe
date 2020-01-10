@@ -28,23 +28,27 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if turn == 0:
                         mousePos = pygame.mouse.get_pos()
-                        Loc = self.board.getLocation(mousePos)
-                        self.board.checkLoc(Loc)
-                        self.board.placeMove(turn, Loc)
-                        turn = 1
-                        self.board.LowerDisplay.changeTurn(turn)
+                        if self.board.checkLoc(turn, mousePos):
+                            turn = 1
+                            self.board.LowerDisplay.changeTurn(turn)
+                            self.board.LowerDisplay.displayWarning = False
+                        else:
+                            self.board.LowerDisplay.displayWarning = True
                     elif turn == 1:
                         mousePos = pygame.mouse.get_pos()
-                        Loc = self.board.getLocation(mousePos)
-                        self.board.placeMove(turn, Loc)
-                        turn = 0
-                        self.board.LowerDisplay.changeTurn(turn)
+                        if self.board.checkLoc(turn, mousePos):
+                            turn = 0
+                            self.board.LowerDisplay.changeTurn(turn)
+                            self.board.LowerDisplay.displayWarning = False
+                        else:
+                            self.board.LowerDisplay.displayWarning = True
                 elif event.type == pygame.MOUSEBUTTONUP:
                     pass
-            # print(event) # uncomment to print all events to terminal
+            #print(event) # uncomment to print all events to terminal
 
-            # draw map background
+            # draw board
             self.board.draw()
+            self.board.checkWin()
 
             # update all game graphics
             pygame.display.update()
