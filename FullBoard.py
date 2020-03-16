@@ -67,4 +67,22 @@ class Board:
         return False
 
     def checkWin(self):
-        pass
+        for item in self.singleBoardArray:
+            board = self.singleBoardArray[item]
+            board.checkWin()
+        if self.singleBoardArray['tl'].winner == self.singleBoardArray['tm'].winner and self.singleBoardArray['tl'].winner == self.singleBoardArray['tr'].winner and self.singleBoardArray['tl'].winner != 'e':
+            return True
+        elif self.singleBoardArray['ml'].winner == self.singleBoardArray['mm'].winner and self.singleBoardArray['ml'].winner == self.singleBoardArray['mr'].winner and self.singleBoardArray['ml'].winner != 'e':
+            return True
+        elif self.singleBoardArray['bl'].winner == self.singleBoardArray['bm'].winner and self.singleBoardArray['bl'].winner == self.singleBoardArray['br'].winner and self.singleBoardArray['bl'].winner != 'e':
+            return True
+        elif self.singleBoardArray['tl'].winner == self.singleBoardArray['ml'].winner and self.singleBoardArray['tl'].winner == self.singleBoardArray['bl'].winner and self.singleBoardArray['tl'].winner != 'e':
+            return True
+        elif self.singleBoardArray['tm'].winner == self.singleBoardArray['mm'].winner and self.singleBoardArray['tm'].winner == self.singleBoardArray['bm'].winner and self.singleBoardArray['tm'].winner != 'e':
+            return True
+        elif self.singleBoardArray['tr'].winner == self.singleBoardArray['mr'].winner and self.singleBoardArray['tr'].winner == self.singleBoardArray['br'].winner and self.singleBoardArray['tr'].winner != 'e':
+            return True
+        elif self.singleBoardArray['tl'].winner == self.singleBoardArray['mm'].winner and self.singleBoardArray['tl'].winner == self.singleBoardArray['br'].winner and self.singleBoardArray['tl'].winner != 'e':
+            return True
+        elif self.singleBoardArray['tr'].winner == self.singleBoardArray['mm'].winner and self.singleBoardArray['tr'].winner == self.singleBoardArray['bl'].winner and self.singleBoardArray['tr'].winner != 'e':
+            return True

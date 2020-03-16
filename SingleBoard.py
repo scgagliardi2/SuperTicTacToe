@@ -16,6 +16,7 @@ class SingleBoard:
         self.background = pygame.Surface((self.width, self.width))
         self.isPlayable = True
         self.color = (255, 255, 255)
+        self.winner = 'e'
         self.XORectArray = {
             'tl': XORect.XORect(self.width, self.width*(0.03), self.width*(0.03), self.x0, self.y0, self.color),
             'tm': XORect.XORect(self.width, self.width*(0.365), self.width*(0.03), self.x0, self.y0, self.color),
@@ -43,16 +44,34 @@ class SingleBoard:
         for item in self.XORectArray:
             self.XORectArray[item].draw(surface)
 
-    def setAsPlayableArea(self):
-        self.color = (144, 238, 144)
-        self.isPlayable = True
-
-    def setAsUnplayableArea(self):
-        self.color = (255, 255, 255)
+    def setAsUnplayableArea(self, turn):
         self.isPlayable = False
+        self.winner = turn
+        if turn == 'o':
+            self.color = (0, 0, 255)
+        if turn == 'x':
+            self.color = (255, 0, 0)
 
     def getRects(self):
         rectArray = []
         for item in self.XORectArray:
             rectArray.append(self.XORectArray[item].getRect())
         return rectArray
+
+    def checkWin(self):
+        if self.XORectArray['tl'].value == self.XORectArray['tm'].value and self.XORectArray['tl'].value == self.XORectArray['tr'].value and self.XORectArray['tl'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['tl'].value)
+        elif self.XORectArray['ml'].value == self.XORectArray['mm'].value and self.XORectArray['ml'].value == self.XORectArray['mr'].value and self.XORectArray['ml'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['ml'].value)
+        elif self.XORectArray['bl'].value == self.XORectArray['bm'].value and self.XORectArray['bl'].value == self.XORectArray['br'].value and self.XORectArray['bl'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['bl'].value)
+        elif self.XORectArray['tl'].value == self.XORectArray['ml'].value and self.XORectArray['tl'].value == self.XORectArray['bl'].value and self.XORectArray['tl'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['tl'].value)
+        elif self.XORectArray['tm'].value == self.XORectArray['mm'].value and self.XORectArray['tm'].value == self.XORectArray['bm'].value and self.XORectArray['tm'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['tm'].value)
+        elif self.XORectArray['tr'].value == self.XORectArray['mr'].value and self.XORectArray['tr'].value == self.XORectArray['br'].value and self.XORectArray['tr'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['tr'].value)
+        elif self.XORectArray['tl'].value == self.XORectArray['mm'].value and self.XORectArray['tl'].value == self.XORectArray['br'].value and self.XORectArray['tl'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['tl'].value)
+        elif self.XORectArray['tr'].value == self.XORectArray['mm'].value and self.XORectArray['tr'].value == self.XORectArray['bl'].value and self.XORectArray['tr'].value != 'e':
+            self.setAsUnplayableArea(self.XORectArray['tr'].value)

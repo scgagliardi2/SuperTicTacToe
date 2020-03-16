@@ -5,6 +5,7 @@ import FullBoard
 # create game clock
 clock = pygame.time.Clock()
 
+
 class Game:
 
     # FPS rate
@@ -44,11 +45,11 @@ class Game:
                             self.board.LowerDisplay.displayWarning = True
                 elif event.type == pygame.MOUSEBUTTONUP:
                     pass
-            #print(event) # uncomment to print all events to terminal
+            # print(event) # uncomment to print all events to terminal
 
             # draw board
             self.board.draw()
-            self.board.checkWin()
+            IsGameOver = self.board.checkWin()
 
             # update all game graphics
             pygame.display.update()
